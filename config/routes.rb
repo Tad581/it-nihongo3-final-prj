@@ -12,6 +12,7 @@ Rails.application.routes.draw do
                        registrations: "users/registrations",
                      }
   get "user/:id", to: "users#show", as: "user"
+
   # get "/search", to: "pages#search"
   # get "/request_list", to: "follows#request"
   # get "/send_friend_request", to: "follows#send_friend_request"
