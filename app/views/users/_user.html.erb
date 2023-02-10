@@ -1,0 +1,8 @@
+<% if @single_room && @single_room.participant?(@single_room, user) %>
+  <% isActive = 'active' %>
+<% else %>
+  <% isActive = '' %>
+<% end %>
+<% if user.is_friend(current_user) %>
+  <%= link_to image_tag(user.chat_avatar, class: 'chat_pfp') + user.name, user, class: "list-group-item d-flex align-items-center justify-content-start user_list_item", data: {turbo: "false"}%>
+<% end %>

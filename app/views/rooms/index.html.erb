@@ -1,0 +1,29 @@
+<div class="app-container">
+  <%= render 'layouts/navbar' %>
+</div>
+<div id="chatroom_container" class="row text-light">
+  <div id="side_panel" class="col-md-4 col-sm-4 search-col">
+    <h6> Chats </h6>
+    <%= turbo_stream_from "users" %>
+    <div id="users">
+      <%= render @users %>
+    </div>
+  </div>
+  <div id="room_container" class="col-md-8 col-sm-8 text-light">
+    <% if @single_room %>
+      <div id="single_room">
+        <div class="room_title">
+          <%= image_tag @user&.avatar_thumbnail, class: 'chat_pfp'%>
+          <h4 class="text-center"> <%= @user&.name %> </h4>
+        </div>
+        <%= turbo_stream_from @single_room %>
+        <div id="messages" data-controller="scroll">
+          <%= render @messages %>
+        </div>
+        <%= render 'layouts/new_message_form' %>
+      </div>
+    <% else %>
+      <p> Select a chat or start a new conversation </p>
+    <% end %>
+  </div>
+</div>
