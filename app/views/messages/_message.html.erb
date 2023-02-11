@@ -1,0 +1,8 @@
+<div class="cont-default cont-<%=message.user.id%>">
+  <%= image_tag(message.user.chat_avatar, class:'chat_pfp') %>
+  <div class="message-box msg-<%= message.user.id %>">
+    <div class="d-flex align-items-center">
+      <%= message.body %>
+    </div>
+  </div>
+</div>
