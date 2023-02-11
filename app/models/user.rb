@@ -16,6 +16,9 @@ class User < ApplicationRecord
 
   has_many :posts
   has_many :messages
+  has_one_attached :avatar
+
+  after_commit :add_default_avatar, on: %i[create update]
 
   def not_following
     @following = self.followees
@@ -47,6 +50,14 @@ class User < ApplicationRecord
     end
   end
 
+  def avatar_thumbnail
+    avatar.variant(resize_to_limit: [150, 150]).processed
+  end
+
+  def chat_avatar
+    avatar.variant(resize_to_limit: [70, 70]).processed
+  end
+
   private
 
   def check_is_friend(friend_id)
@@ -56,5 +67,15 @@ class User < ApplicationRecord
     rescue
       return "not friend"
     end
+  end
+
+  def add_default_avatar
+    return if avatar.attached?
+
+    avatar.attach(
+      io: File.open(Rails.root.join("app", "assets", "images", "avatar", "unknown.jpeg")),
+      filename: "unknown.jpeg",
+      content_type: "image/jpeg",
+    )
   end
 end
