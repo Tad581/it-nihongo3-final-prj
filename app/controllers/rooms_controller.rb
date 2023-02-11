@@ -6,4 +6,8 @@ class RoomsController < ApplicationController
     @users = User.all_except(current_user)
     render "index"
   end
+
+  def create
+    @room = Room.create(name: params["room"]["name"])
+  end
 end
