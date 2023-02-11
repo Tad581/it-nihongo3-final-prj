@@ -1,0 +1,53 @@
+<div class="app-container">
+  <!--navbar-->
+  <%= render "layouts/navbar"%>
+  <!--content-->
+  <%= render "layouts/sidebar"%>
+</div>
+<!--posts-->
+<div class="posts search-list">
+  <div class="timeline">
+    <div class="view view-post-container smaller-margin">
+      <div class="wrapper">
+        <div class="shortcuts shortcuts-2">
+          <div class="second-col">
+            <div class="online search-online">
+              <h6 class="title search-title">
+                People
+              </h6>
+              <% if @search_user.length() == 0 %>
+                <p class="search-message">There are no results matching your keyword</p>
+              <% else %>
+                <% @search_user.each do |user| %>
+                  <div class="user search-user">
+                    <div class="profile">
+                      <%= link_to image_tag(user.avatar_thumbnail, alt: ""), profile_path(:user => user) %>
+                    </div>
+                    <h4><%= user.name %>
+                    </h4>
+                    <% if current_user.friend_status(user.id) == "friend"%>
+                      <div class="friend-follow">
+                        <%= image_tag 'posts/messenger.png', alt: "" %>
+                        <%= link_to "Chat", rooms_path %>
+                      </div>
+                    <% elsif current_user.friend_status(user.id) == "not followed" %>
+                      <div class="friend-follow">
+                        <%= image_tag 'posts/add_friend.png', alt: "" %>
+                        <%= link_to "Add", send_friend_request_path(:id => user.id)%>
+                      </div>
+                    <% else %>
+                      <div class="friend-follow">
+                        <%= image_tag 'posts/delete_request.png', alt: "" %>
+                        <%= link_to "Delete", cancel_friend_request_path(:id => user.id)%>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

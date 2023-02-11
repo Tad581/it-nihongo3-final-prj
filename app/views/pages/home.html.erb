@@ -1,9 +1,287 @@
-<h1>Turbo chat</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-<% if current_user %>
-  <%= link_to "Start Chatting", rooms_path%>
-  <%= button_to "Logout", destroy_user_session_path, method: :delete%>
-<% else %>
-  <%= link_to "Login", new_user_session_path %>
-  <%= link_to "Sign Up", new_user_registration_path %>
-<% end %>
+<div class="app-container">
+  <!--navbar-->
+  <%= render "layouts/navbar"%>
+  <!--content-->
+  <div class="wrapper">
+    <div class="shortcuts">
+      <div class="first-col">
+        <div class="menu-item">
+          <div class="user">
+            <div class="profile">
+              <%= link_to image_tag(current_user.avatar_thumbnail, alt: "") + current_user.name, profile_path(:user => current_user) %>
+            </div>
+            <h4><%= current_user.name %></h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'icons/shield.svg', alt: ""%>
+            </div>
+            <h4>COVID-19 Information </h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <%= link_to image_tag('icons/colored-people.svg', alt: "") + 'Friends', request_list_path%>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <%= link_to image_tag('icons/colored-messenger.svg', alt: "") + 'Messenger', rooms_path%>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'icons/colored-flag.svg', alt: ""%>
+            </div>
+            <h4>Pages </h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row  border">
+            <div class="icon more">
+              <%= image_tag 'icons/arrow-down.svg', alt: ""%>
+            </div>
+            <h4>see more </h4>
+          </div>
+        </div>
+      </div>
+      <div class="second-col">
+        <h6 class="title">
+          your shortcuts
+        </h6>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'stories/st-1.jpeg', alt: ""%>
+            </div>
+            <h4>Designers house </h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'stories/st-2.jpeg', alt: ""%>
+            </div>
+            <h4>Script house </h4>
+          </div>
+          <div class="menu-item">
+            <div class="item-row">
+              <div class="icon">
+                <%= image_tag 'stories/page-1.jpg', alt: ""%>
+              </div>
+              <h4>ui ux Designers workshop </h4>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="item-row">
+              <div class="icon">
+                <%= image_tag 'stories/st-3.jpeg', alt: ""%>
+              </div>
+              <h4>netflix movies recommends </h4>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="item-row">
+              <div class="icon">
+                <%= image_tag 'stories/page-2.jpg', alt: ""%>
+              </div>
+              <h4>the future </h4>
+            </div>
+          </div>
+          <div class="menu-item">
+            <div class="item-row">
+              <div class="icon">
+                <%= image_tag 'stories/page-3.jpeg', alt: ""%>
+              </div>
+              <h4> smart </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--posts-->
+    <div class="posts">
+      <!--create post-->
+      <div class="timeline">
+        <div class="view create-post">
+          <div class="input">
+            <div class="user">
+              <div class="profile">
+                <%= link_to image_tag(current_user.avatar_thumbnail, alt: "") + current_user.name, profile_path(:user => current_user) %>
+              </div>
+            </div>
+            <%= render 'posts/form', post: @post%>
+          </div>
+          <div class="media">
+            <div class="category">
+              <div class="option">
+                <div class="icon">
+                  <%= image_tag 'icons/video-live.svg', alt: ""%>
+                </div>
+                <span>Live video</span>
+              </div>
+              <div class="option">
+                <div class="icon">
+                  <%= image_tag 'icons/photos.svg', alt: ""%>
+                </div>
+                <span>photo/video</span>
+              </div>
+              <div class="option">
+                <div class="icon">
+                  <%= image_tag 'icons/smile.svg', alt: ""%>
+                </div>
+                <span>feeling/activity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--post container-->
+        <% @posts.each do |post| %>
+          <% if  post.user == current_user && post.parent_id.nil? || post.is_friend_post(current_user) && post.parent_id.nil? %>
+            <div class="view view-post-container smaller-margin">
+              <div class="view-post">
+                <div class="upper">
+                  <div class="d-flex">
+                    <div class="user">
+                      <div class="profile">
+                        <%= image_tag @thumbnailList[@posts.find_index(post)], alt: "" %>
+                      </div>
+                    </div>
+                    <div class="info">
+                      <h6 class="name">
+                        <%= @nicknameList[@posts.find_index(post)] %>
+                      </h6>
+                      <span class="time"><%= time_ago_in_words(post.created_at) %> ago </span>
+                    </div>
+                  </div>
+                  <div class="dots">
+                    <div class="dot"></div>
+                  </div>
+                </div>
+                <div class="desc">
+                  <p><%= post.content%></p>
+                </div>
+                <div class="actions-container">
+                  <div class="action">
+                    <div class="icon">
+                      <%= image_tag 'icons/thumbs-up.svg', alt: ""%>
+                    </div>
+                    <span>
+                      Like
+                    </span>
+                  </div>
+                  <div class="action">
+                    <div class="icon">
+                      <%= image_tag 'icons/comment.svg', alt: ""%>
+                    </div>
+                    <span>
+                      Comment
+                    </span>
+                  </div>
+                  <div class="action">
+                    <div class="icon">
+                      <%= image_tag 'icons/share.svg', alt: ""%>
+                    </div>
+                    <span>
+                      Share
+                    </span>
+                  </div>
+                </div>
+                <div class="comment-list">
+                  <% @posts.reverse.each do |comment| %>
+                    <% if comment.parent_id == post.id%>
+                      <div class="comment-box">
+                        <div class="user">
+                          <div class="profile">
+                            <%= image_tag @thumbnailList[@posts.find_index(comment)], alt: "" %>
+                          </div>
+                        </div>
+                        <div class="comment-content">
+                          <h4><%= @nicknameList[@posts.find_index(comment)] %> </h4>
+                          <p><%= comment.content%></p>
+                        </div>
+                      </div>
+                    <%end%>
+                  <% end %>
+                </div>
+                <div class="write-comment">
+                  <div class="user">
+                    <div class="profile">
+                      <%= image_tag current_user.avatar_thumbnail, alt: "" %>
+                    </div>
+                  </div>
+                  <%= form_with(model: @post, url: posts_path) do |form| %>
+                    <div class="post-form">
+                      <div>
+                        <%= form.text_field :content, placeholder: "Write a comment ...",  class: "open-post-link" %>
+                        <%= form.number_field :user_id, id: :post_user_id,  value: current_user.id, type: "hidden"%>
+                        <%= form.number_field :parent_id, id: :parent_id,  value: post.id, type: "hidden"%>
+                      </div>
+                      <div>
+                        <%= form.submit "Comment" %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <!--shortcuts 2 -events and chat- -->
+    <div class="shortcuts shortcuts-2">
+      <div class="second-col first-col">
+        <div class="menu-item">
+          <div class="upper">
+            <h6>Your pages</h6>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'stories/st-2.jpeg', alt: ""%>
+            </div>
+            <h4>Script house </h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row">
+            <div class="icon">
+              <%= image_tag 'stories/st-1.jpeg', alt: ""%>
+            </div>
+            <h4>Bibs ui design </h4>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="item-row  border">
+            <div class="icon more">
+              <%= image_tag 'icons/arrow-down.svg', alt: ""%>
+            </div>
+            <h4>see more </h4>
+          </div>
+        </div>
+      </div>
+      <div class="second-col">
+        <div class="online">
+          <h6 class="title">
+            contact
+          </h6>
+          <% current_user.followees.each do |friend|%>
+            <% if friend.is_friend(current_user)%>
+              <div class="user">
+                <div class="profile">
+                  <%= link_to image_tag(friend.avatar_thumbnail, alt: ""), profile_path(:user => friend) %>
+                </div>
+                <h4><%= friend.name %></h4>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

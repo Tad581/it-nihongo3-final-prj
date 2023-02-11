@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
+
   # GET /posts or /posts.json
   def index
     @posts = Post.all
@@ -12,6 +13,7 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
+    @parent_id = params[:post]
     @post = Post.new
   end
 
@@ -25,7 +27,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.html { redirect_to root_path, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
         format.html { render :new, status: :unprocessable_entity }

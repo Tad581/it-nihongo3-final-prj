@@ -1,0 +1,70 @@
+<div class="app-container">
+  <%= render "layouts/navbar"%>
+</div>
+<p class="edit-title">Edit user profile</p>
+<div class="login-page edit-page">
+  <div class="box">
+    <div class="form-box">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <div class="field">
+          <%= image_tag resource.avatar_thumbnail if resource.avatar.attached? %>
+        </div>
+        <div class="field">
+          <%= f.file_field :avatar %>
+        </div>
+        <div class="field">
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Name"%>
+        </div>
+        <div class="field">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", type: "hidden" %>
+        </div>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+        <div class="field">
+          <%= f.password_field :password, autocomplete: "new-password", placeholder: "New password" %>
+        </div>
+        <div class="field">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm password" %>
+        </div>
+        <div class="field">
+          <%= f.password_field :current_password, autocomplete: "current-password", placeholder: "Current Password"%>
+        </div>
+        <div class="actions">
+          <%= f.submit "Update", class: "sign-up" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<style>
+  .edit-page {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    height: auto;
+    overflow: hidden;
+    background: #18191a;
+  }
+
+  .form-box {
+    background-color: #4a4a4a;
+    border: 1px solid #828282;
+  }
+
+  .form-box .field img {
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .form-box .field input {
+    background-color: #282828;
+    color: white;
+    border: none;
+  }
+
+  .sign-up {
+    background-color: #1877f2 !important;
+    border: none !important;
+  }
+</style>
