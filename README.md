@@ -1,25 +1,47 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Tech
+1. Frontend and Backend: Ruby on Rails
+2. Database: sqlite
 
-Things you may want to cover:
+### Features
+1. Create/Edit account
+2. Post/Comment
+3. Add/Delete friend
+4. Chat
+### Required
+1. Ruby version > 3.0
+2. Rails version > 7
+3. Redis-server
 
-* Ruby version
+To install redis-server on ubuntu run
+```sh
+    sudo apt install redis-server
+```
 
-* System dependencies
+ **Search Google to know how to install Redis-server in other environment**
 
-* Configuration
+###  How to run
+```sh
+    bundle install
+```
 
-* Database creation
+```sh
+    rails db:migrate
+```
 
-* Database initialization
+Now your app is ready
 
-* How to run the test suite
+To start your app run
+```sh
+rails s
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Open terminal and run
+```sh
+redis-server
+```
 
-* Deployment instructions
+If it notice that redis-server is already run, it's ok
 
-* ...
-# it-nihongo3-final-prj
+Server run in **localhost:3000**
