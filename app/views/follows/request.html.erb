@@ -1,0 +1,23 @@
+<div class="app-container">
+  <!--navbar-->
+  <%= render "layouts/navbar"%>
+  <!--content-->
+  <%= render "layouts/sidebar"%>
+  <div class="friend-list">
+    <h4>
+      Friend requests
+    </h4>
+    <div class="detail-list">
+      <% current_user.friend_request_list.each do |user| %>
+        <div class="profile">
+          <%= link_to image_tag(user.avatar_thumbnail, class: 'avatar', alt: ""), profile_path(:user => user) %>
+          <h4><%= user.name %></h4>
+          <div class="button-area">
+            <%= link_to 'Confirm', accept_friend_request_path(:id => user.id), class: 'confirm'%>
+            <%= link_to 'Delete', delete_friend_request_path(:id => user.id), class: 'delete'%>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
