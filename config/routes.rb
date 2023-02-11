@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :posts
   # resources :follows
   # resources :posts
   resources :rooms
